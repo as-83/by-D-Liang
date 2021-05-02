@@ -8,7 +8,7 @@ import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-/* Buffer to store one integer value.
+/** Buffer to store one integer value.
 * The buffer provides the method write(int) to add an int value to the buffer and the method read()
 * to read and delete an int value from the buffer. To synchronize the operations, used a lock with
 * two conditions: notEmpty (i.e., the buffer is not empty) and notFull (i.e., the buffer is not full).
@@ -17,7 +17,7 @@ import java.util.concurrent.locks.ReentrantLock;
 * for the notEmpty condition
 */
 public class LockedBuffer {
-    private static Buffer buffer = new Buffer();
+    private static final Buffer buffer = new Buffer();
 
     public static void main(String[] args) {
         ExecutorService executorService = Executors.newFixedThreadPool(2);
