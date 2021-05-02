@@ -17,6 +17,7 @@ import java.util.concurrent.locks.ReentrantLock;
 * for the notEmpty condition
 */
 public class LockedBuffer {
+    private static Buffer buffer = new Buffer();
 
     public static void main(String[] args) {
         ExecutorService executorService = Executors.newFixedThreadPool(2);
@@ -33,7 +34,7 @@ public class LockedBuffer {
         public void run() {
             while(true){
                 int value = (int) (Math.random() * 10);
-                Buffer.write(value);
+                buffer.write(value);
                 try {
                     Thread.sleep((long) (Math.random() * 4000));
                 } catch (InterruptedException e) {
@@ -49,7 +50,7 @@ public class LockedBuffer {
         @Override
         public void run() {
             while(true){
-                Buffer.read();
+                buffer.read();
                 try {
                     Thread.sleep((long) (Math.random() * 3000));
                 } catch (InterruptedException e) {
@@ -65,7 +66,7 @@ public class LockedBuffer {
         private static Condition notEmpty = lock.newCondition();
         private static Condition notFull = lock.newCondition();
 
-        public static void write(int value){
+        public void write(int value){
             lock.lock();
             if(buffer.size() == 1){
                 System.out.println(value + " - waiting in queue. Buffer is full.");
@@ -84,7 +85,7 @@ public class LockedBuffer {
             lock.unlock();
         }
 
-        public static void read(){
+        public void read(){
             lock.lock();
             if(buffer.size() == 0){
                 System.out.println("Nothing to read!!! Buffer is empty!!!");
